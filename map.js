@@ -11,6 +11,9 @@ const finalMap = {};
 const tileItems = {
     '2:3:0': {
         items: ['fields:Poison']
+    },
+    '6:5:0': {
+        items: ['terrain:GroundSpikes']
     }
 };
 
