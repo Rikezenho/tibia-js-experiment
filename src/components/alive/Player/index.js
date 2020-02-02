@@ -1,4 +1,5 @@
 import React from 'react';
+import NameBar from '../../hud/NameBar';
 import VisualElement from './visual';
 import baseProps from '../base';
 
@@ -29,9 +30,16 @@ export default (props = {}) => {
         playerPos,
         setPlayerPos
     } = props;
-    const tileWidth = 32;
-
+    const {
+        name,
+        health,
+        mana
+    } = state;
+    const [currentHealth, setCurrentHealth] = React.useState(health);
+    const [currentMana, setCurrentMana] = React.useState(mana);
     const [canWalk, allowWalk] = React.useState(true);
+
+    const tileWidth = 32;
 
     const walk = (direction) => {
         allowWalk(false);
@@ -80,7 +88,9 @@ export default (props = {}) => {
         if (rightKey) walk('right');
     }, [upKey, downKey, leftKey, rightKey]);
 
-    return <VisualElement
-        { ...state }
-    />;
+    return <div style={{ position: 'relative' }}>
+        <VisualElement { ...state }>
+            <NameBar { ...{ name, health, mana, currentHealth, currentMana }} />
+        </VisualElement>
+    </div>;
 }

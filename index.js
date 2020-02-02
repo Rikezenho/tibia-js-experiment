@@ -31,8 +31,8 @@ const bounds = map.reduce((acc, curr) => {
 
 const App = () => {
     const [playerPos, setPlayerPos] = React.useState({
-        x: 0,
-        y: 0,
+        x: 2,
+        y: 2,
     });
 
     const upKey = useKeyPress('w');
@@ -40,7 +40,7 @@ const App = () => {
     const downKey = useKeyPress('s');
     const rightKey = useKeyPress('d');
 
-    return (<div>
+    return (<div className='game'>
         <Player
             {...{ top: playerPos.y * tileHeight, left: playerPos.x * tileWidth, upKey, leftKey, downKey, rightKey }}
             bounds={bounds}
