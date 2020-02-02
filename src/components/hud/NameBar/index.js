@@ -31,7 +31,7 @@ const LifeBarColor = styled.div`
     width: ${({ calculatedSize }) => calculatedSize ? `${calculatedSize}%` : '100%'};
 `;
 
-export default (props) => {
+const NameBar = (props) => {
     const {
         name,
         currentHealth,
@@ -60,3 +60,5 @@ export default (props) => {
         </LifeBar>
     </Container>;
 };
+
+export default NameBar;

@@ -1,29 +1,34 @@
-import Grass from "./src/components/map/tiles/Grass";
-import Poison from "./src/components/map/fields/Poison";
+export const mapInfo = {
+    minX: 0,
+    minY: 0,
+    maxX: 15,
+    maxY: 15,
+    minZ: -7,
+    maxZ: 8,
+};
 
-const minX = 0;
-const minY = 0;
-const maxX = 15;
-const maxY = 15;
+const finalMap = {};
+const tileItems = {
+    '2:3:0': {
+        items: ['fields:Poison']
+    }
+};
 
-const finalMap = [];
-
-for (let x = minX; x < maxX; x++) {
-    for (let y = minY; y < maxY; y++) {
-        const stack = [
-            Grass
+for (let x = mapInfo.minX; x < mapInfo.maxX; x++) {
+    for (let y = mapInfo.minY; y < mapInfo.maxY; y++) {
+        let stack = [
+            'tiles:Grass'
         ];
 
-        if (x === 2 && y === 3) {
-            stack.push(Poison);    
+        const item = tileItems[`${x}:${y}:0`];
+        if (item) {
+            stack = [].concat(stack, [...item.items]);
         }
 
-        finalMap.push({
-            x,
-            y,
-            stack,
-        });
+        finalMap[`${x}:${y}:0`] = stack;
     }
 }
 
-export default finalMap;
+const stringMap = JSON.stringify(finalMap);
+
+export default stringMap;

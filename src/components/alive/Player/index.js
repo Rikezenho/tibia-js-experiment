@@ -2,31 +2,16 @@ import React from 'react';
 import NameBar from '../../hud/NameBar';
 import VisualElement from './visual';
 import baseProps from '../base';
+import { allowedMove } from '../../../map/functions';
+import parsedMap from '../../../map';
 
-const canDoTheWalk = (bounds, newPos) => {
-    if (newPos.x < bounds.minX) {
-        return false;
-    }
-    if (newPos.y < bounds.minY) {
-        return false;
-    }
-    if (newPos.x > bounds.maxX) {
-        return false;
-    }
-    if (newPos.y > bounds.maxY) {
-        return false;
-    }
-    return true;
-};
-
-export default (props = {}) => {
+const Player = (props = {}) => {
     const [state, setState] = React.useState({ ...baseProps, ...props });
     const {
         upKey,
         leftKey,
         downKey,
         rightKey,
-        bounds,
         playerPos,
         setPlayerPos
     } = props;
@@ -65,7 +50,7 @@ export default (props = {}) => {
                 newPos = { x: playerPos.x + 1, y: playerPos.y };
             break;
         }
-        if (!canDoTheWalk(bounds, newPos)) {
+        if (!allowedMove(parsedMap.map, newPos)) {
             allowWalk(true);
             return;
         }
@@ -93,4 +78,6 @@ export default (props = {}) => {
             <NameBar { ...{ name, health, mana, currentHealth, currentMana }} />
         </VisualElement>
     </div>;
-}
+};
+
+export default Player;
