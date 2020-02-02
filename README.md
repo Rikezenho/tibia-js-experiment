@@ -6,7 +6,9 @@ A funny experiment recreating Tibia with JavaScript and React.
 
 Use WASD keys to move character.
 
-https://tibia-js-experiment.now.sh
+![](ss.png)
+
+https://tibia-js.netlify.com
 
 ## Roadmap
 
