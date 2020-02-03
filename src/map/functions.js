@@ -34,7 +34,11 @@ export const shouldNotCompleteMove = (map = {}, { x, y }) => {
     console.log(map[`${x}:${y}:0`]);
     return (
         typeof map[`${x}:${y}:0`] === 'undefined'
-        || (map[`${x}:${y}:0`] && map[`${x}:${y}:0`].some((stackItem) => stackItem.props.walkable === false))
+        || (
+            map[`${x}:${y}:0`]
+            && map[`${x}:${y}:0`].some((stackItem) => stackItem.props.walkable === false)
+            && map[`${x}:${y}:0`].some((stackItem) => !stackItem.props.border)
+        )
     );
 };
 
