@@ -1,5 +1,8 @@
 import React from 'react';
 import VisualElement from './visual';
+import { loseHealth } from '../../../store/actions/player';
+import { setMessage } from '../../../store/actions/hud';
+import { store } from '../../../store';
 
 export const metadata = {
     damage: 20,
@@ -9,21 +12,19 @@ export const metadata = {
 };
 
 const Poisoned = (props = {}) => {
-    const {
-        currentHealth,
-        setCurrentHealth,
-    } = props;
+    const { state: globalState, dispatch } = React.useContext(store);
+
     const [times, setTimes] = React.useState(Math.ceil(metadata.duration / metadata.interval));
     const [doEffect, setDoEffect] = React.useState(false);
 
     React.useEffect(() => {
-        console.log('rodada do poison', times);
         if (times) {
             setTimeout(() => {
                 setDoEffect(true);
                 setTimes(times - 1);
                 setTimeout(() => setDoEffect(false), metadata.animationDuration);
-                setCurrentHealth(currentHealth - metadata.damage);
+                dispatch(setMessage(`You lose ${metadata.damage} hitpoints.`));
+                dispatch(loseHealth(metadata.damage));
             }, metadata.interval);
         }
     }, [times]);

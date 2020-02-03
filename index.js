@@ -5,28 +5,46 @@ import ReactDOM from 'react-dom';
 import parsedMap from './src/map';
 import useKeyPress from './src/hooks/useKeyPress';
 import Player from './src/components/alive/Player';
+import { store, StateProvider } from './src/store';
+import ScreenMessage from './src/components/hud/ScreenMessage';
 
 import './src/scss/index.scss';
 
 const App = () => {
-    const { map = [], tileWidth, tileHeight } = React.useMemo(() => parsedMap, []);
+    const {
+        map = [],
+        tileWidth,
+        tileHeight,
+        mapInfo: {
+            maxX,
+            maxY,
+        },
+    } = React.useMemo(() => parsedMap, []);
     
-    const [playerPos, setPlayerPos] = React.useState({
-        x: 2,
-        y: 2,
-    });
+    const { state: globalState } = React.useContext(store);
+    const {
+        currentPlayer: {
+            pos
+        },
+    } = globalState;
 
     const upKey = useKeyPress('w');
     const leftKey = useKeyPress('a');
     const downKey = useKeyPress('s');
     const rightKey = useKeyPress('d');
 
-    return (<div className='game'>
+    return (<div className='game' style={{ width: maxX * tileWidth, height: maxY * tileHeight }}>
+        <ScreenMessage />
         <React.Fragment>
             <Player
-                {...{ top: playerPos.y * tileHeight, left: playerPos.x * tileWidth, upKey, leftKey, downKey, rightKey }}
-                playerPos={playerPos}
-                setPlayerPos={setPlayerPos}
+                {...{
+                    top: pos.y * tileHeight,
+                    left: pos.x * tileWidth,
+                    upKey,
+                    leftKey,
+                    downKey,
+                    rightKey
+                }}
             />
             {
                 Object.values(map)
@@ -35,7 +53,11 @@ const App = () => {
     </div>);
 };
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+    <StateProvider>
+        <App />
+    </StateProvider>
+, document.getElementById('root'));
 
 if (module.hot) {
   module.hot.accept();

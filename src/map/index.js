@@ -1,5 +1,5 @@
 import { prepareStack } from './functions';
-import stringMap from '../../map';
+import stringMap, { mapInfo } from '../../map';
 
 const [tileWidth, tileHeight] = [32, 32];
 const map = JSON.parse(stringMap);
@@ -17,6 +17,7 @@ const mapParser = () => {
         map: parsedMap,
         tileWidth,
         tileHeight,
+        mapInfo,
     }
 };
 

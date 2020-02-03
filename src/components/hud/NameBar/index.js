@@ -35,10 +35,10 @@ const NameBar = (props) => {
     const {
         name,
         currentHealth,
-        health
+        maxHealth
     } = props;
 
-    const percentage = currentHealth / health * 100;
+    const percentage = currentHealth / maxHealth * 100;
     let lifeBarColor = '#00C103';
     if (percentage <= 90 && percentage >= 70) {
         lifeBarColor = '#89a17f';
