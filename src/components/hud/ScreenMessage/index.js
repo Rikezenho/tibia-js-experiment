@@ -25,12 +25,14 @@ const ScreenMessage = (props) => {
     } = globalState;
 
     React.useEffect(() => {
-        const timer = setTimeout(() => {
-            dispatch(setMessage(''));
-        }, 4000);
-        return () => {
-            clearTimeout(timer);
-        };
+        if (message) {
+            const timer = setTimeout(() => {
+                dispatch(setMessage(''));
+            }, 4000);
+            return () => {
+                clearTimeout(timer);
+            };
+        }
     }, [message]);
 
     return <Container>
