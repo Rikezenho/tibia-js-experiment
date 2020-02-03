@@ -2,7 +2,7 @@ import React from 'react';
 import NameBar from '../../hud/NameBar';
 import VisualElement from './visual';
 import baseProps from '../base';
-import { allowedMove } from '../../../map/functions';
+import { shouldNotCompleteMove, effectsInSqm } from '../../../map/functions';
 import parsedMap from '../../../map';
 
 const Player = (props = {}) => {
@@ -27,6 +27,9 @@ const Player = (props = {}) => {
     const tileWidth = 32;
 
     const walk = (direction) => {
+        if (!canWalk) {
+            return;
+        }
         allowWalk(false);
         let top = state.top;
         let left = state.left;
@@ -50,23 +53,46 @@ const Player = (props = {}) => {
                 newPos = { x: playerPos.x + 1, y: playerPos.y };
             break;
         }
-        if (!allowedMove(parsedMap.map, newPos)) {
+        if (shouldNotCompleteMove(parsedMap.map, newPos)) {
             allowWalk(true);
             return;
         }
 
-        setState(state => ({ ...state, direction, left, top, walking: true }));
+        const effects = effectsInSqm(parsedMap.map, newPos);
+        const finalEffects = { ...state.effects } || {};
+        effects.forEach((item) => {
+            console.log(`você foi ${item.name}`);
+            // if (finalEffects[item.name]) {
+            //     clearTimeout(finalEffects[item.name].wipeTimeout);
+            //     delete state.effects[item.name];
+            //     setState(state => ({ ...state, effects: state.effects }));
+            // }
+            finalEffects[item.name] = {
+                component: item.component,
+                wipeTimeout: setTimeout(() => {
+                    delete state.effects[item.name];
+                    setState(state => ({ ...state, effects: state.effects }));
+                }, item.metadata.duration)
+            };
+        }, {});
+
+        setState(state => ({
+            ...state,
+            direction,
+            left,
+            top,
+            walking: true,
+            effects: finalEffects,
+        }));
+
+        setPlayerPos(newPos);
         setTimeout(() => {
             setState(state => ({ ...state, walking: false }));
-            setPlayerPos(newPos);
             allowWalk(true);
         }, 250);
     };
 
     React.useEffect(() => {
-        if (!canWalk) {
-            return;
-        }
         if (upKey) walk('up');
         if (downKey) walk('down');
         if (leftKey) walk('left');
@@ -75,6 +101,15 @@ const Player = (props = {}) => {
 
     return <div style={{ position: 'relative' }}>
         <VisualElement { ...state }>
+            {
+                Object.values(state.effects).length
+                    ? Object.values(state.effects).map((item, index) => React.createElement(item.component, {
+                        key: `effect-${index}`,
+                        currentHealth,
+                        setCurrentHealth,
+                    }))
+                    : null
+            }
             <NameBar { ...{ name, health, mana, currentHealth, currentMana }} />
         </VisualElement>
     </div>;

@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
-export default styled.div`
+export const rules = `
     text-shadow: 1px 1px 1px #000, -1px -1px 1px #000, 1px -1px 1px #000, -1px 1px 1px #000;
 `;
+
+export default styled.div`${rules}`;

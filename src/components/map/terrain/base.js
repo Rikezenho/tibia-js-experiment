@@ -1,4 +1,4 @@
-export const baseProps = {
+export default {
     zIndex: 1,
     walkable: false
 };

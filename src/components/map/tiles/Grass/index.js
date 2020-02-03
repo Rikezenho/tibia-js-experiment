@@ -1,12 +1,8 @@
 import React from 'react';
 import VisualElement from './visual';
-import { baseProps } from '../base';
 
-const Grass = (props) => {
-    const myProps = { ...baseProps, ...{
-        walkable: true
-    }, ...props };
-    return <VisualElement { ...myProps } />;
+const Grass = (props = {}) => {
+    return <VisualElement { ...props } />;
 };
 
 export default Grass;

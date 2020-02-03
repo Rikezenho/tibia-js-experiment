@@ -3,5 +3,6 @@ export default {
     health: 100,
     mana: 100,
     direction: 'down',
-    squareSize: 64
+    squareSize: 64,
+    effects: {},
 };

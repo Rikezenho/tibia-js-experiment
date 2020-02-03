@@ -1,9 +1,11 @@
 import React from 'react';
 import VisualElement from './visual';
-import { baseProps } from '../base';
 
-const GroundSpikes = (props) => {
-    const myProps = { ...baseProps, ...props };
+const GroundSpikes = (props = {}) => {
+    const myProps = {
+        ...props,
+        walkable: false,
+    }
     return <VisualElement { ...myProps } />;
 };
 

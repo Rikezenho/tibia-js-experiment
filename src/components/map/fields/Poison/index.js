@@ -1,14 +1,17 @@
 import React from 'react';
 import VisualElement from './visual';
-import { baseProps } from '../base';
+import Poisoned, { metadata as effectMetadata } from '../../../effects/Poisoned';
 
 const Poison = (props = {}) => {
-    const myProps = { ...baseProps, ...{
-        damage: 10,
-        interval: 2000,
-    }, ...props };
+    return <VisualElement { ...props } />;
+};
 
-    return <VisualElement { ...myProps } />;
+export const metadata = {
+    effect: {
+        name: 'poison',
+        component: Poisoned,
+        metadata: effectMetadata
+    },
 };
 
 export default Poison;
