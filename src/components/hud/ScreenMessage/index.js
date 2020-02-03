@@ -27,7 +27,7 @@ const ScreenMessage = (props) => {
     React.useEffect(() => {
         const timer = setTimeout(() => {
             dispatch(setMessage(''));
-        }, 5000);
+        }, 4000);
         return () => {
             clearTimeout(timer);
         };
