@@ -18,8 +18,11 @@ https://tibia-js.netlify.com
 - [x] Map system with z-index
 - [x] Tibia things as components (with styled-components too!)
 - [ ] More ground and water tiles
-- [ ] Walls and collision
-- [ ] Field damage when walk into it
+- [ ] Buildings
+- [x] Not walkable SQMs
+- [x] Field damage when walk into it
+- [x] Game messages on screen
+- [ ] Game HUD
 - [ ] More field types
 - [ ] First monster with basic AI
 - [ ] Monster attacking player
@@ -27,4 +30,5 @@ https://tibia-js.netlify.com
 - [ ] Store items in backpack
 - [ ] Use items
 - [ ] Looting system
+- [ ] Basic map editor
 - [ ] Basic map editor
