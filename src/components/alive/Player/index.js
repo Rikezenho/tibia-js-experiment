@@ -2,11 +2,13 @@ import React from 'react';
 import NameBar from '../../hud/NameBar';
 import VisualElement from './visual';
 import baseProps from '../base';
-import { shouldNotCompleteMove, effectsInSqm } from '../../../map/functions';
+import { shouldNotCompleteMove, getFutureSqmInfo } from '../../../map/functions';
 import parsedMap from '../../../map';
 import { setPlayerPos } from '../../../store/actions/player';
 import { setMessage } from '../../../store/actions/hud';
 import { store } from '../../../store';
+
+const calculateSpeed = (speed) => 1/speed * 1;
 
 const Player = (props = {}) => {
     const {
@@ -27,6 +29,7 @@ const Player = (props = {}) => {
             maxMana,
             currentHealth,
             currentMana,
+            baseSpeed,
         },
         map: {
             tileWidth
@@ -39,6 +42,7 @@ const Player = (props = {}) => {
         left: pos.x * tileWidth,
         top: pos.y * tileWidth,
     });
+    const [speed, setSpeed] = React.useState(baseSpeed);
     const [canWalk, allowWalk] = React.useState(true);
     const [effects, setEffects] = React.useState({});
 
@@ -47,8 +51,6 @@ const Player = (props = {}) => {
             return;
         }
         allowWalk(false);
-        let top = pos.y * tileWidth;
-        let left = pos.x * tileWidth;
         let newPos = {};
 
         switch (newDirection) {
@@ -70,10 +72,10 @@ const Player = (props = {}) => {
             return;
         }
 
-        const sqmEffects = effectsInSqm(parsedMap.map, newPos);
+        const { effects: sqmEffects, slow } = getFutureSqmInfo(parsedMap.map, newPos);
         const finalEffects = { ...effects } || {};
         sqmEffects.forEach((item) => {
-            dispatch(setMessage(`You are poisoned.`));
+            dispatch(setMessage(item.metadata.message));
             // if (finalEffects[item.name]) {
             //     clearTimeout(finalEffects[item.name].wipeTimeout);
             //     delete state.effects[item.name];
@@ -93,7 +95,8 @@ const Player = (props = {}) => {
         setCssPosition({
             left: newPos.x * tileWidth,
             top: newPos.y * tileWidth,
-        })
+        });
+        setSpeed(slow ? baseSpeed - (baseSpeed * slow) : baseSpeed);
         setEffects(finalEffects);
 
         dispatch(setPlayerPos(newPos));
@@ -110,12 +113,19 @@ const Player = (props = {}) => {
         if (rightKey) walk('right');
     }, [upKey, downKey, leftKey, rightKey]);
 
+    const calculatedSpeed = React.useMemo(() => {
+        const finalSpeed = calculateSpeed(speed);
+        console.log(`Speed: ${finalSpeed}s`);
+        return finalSpeed;
+    }, [speed]);
+
     return <div style={{ position: 'relative' }}>
         <VisualElement {...{
             walking,
             direction,
             left: cssPosition.left,
-            top: cssPosition.top
+            top: cssPosition.top,
+            speed: calculatedSpeed,
         }}>
             {
                 Object.values(effects).length

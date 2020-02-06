@@ -56,11 +56,17 @@ export const shouldNotCompleteMove = (map = {}, { x, y }) => {
     );
 };
 
-export const effectsInSqm = (map = {}, { x, y }) => {
+export const getFutureSqmInfo = (map = {}, { x, y }) => {
     const sqmEffects = map[`${x}:${y}:0`].filter((stackItem) => stackItem.props.effect);
-    if (!sqmEffects.length) {
-        return [];
-    }
-    const effects = sqmEffects.map((item) => item.props.effect);
-    return effects;
+    const effects = sqmEffects.length ? sqmEffects.map((item) => item.props.effect) : [];
+
+    const sqmSlow = map[`${x}:${y}:0`].reduce((acc, curr) =>
+        curr.props.slow > acc ? curr.props.slow : acc,
+        0,
+    );
+    
+    return {
+        effects,
+        slow: sqmSlow,
+    };
 };

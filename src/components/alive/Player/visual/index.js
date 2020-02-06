@@ -56,7 +56,7 @@ const walkingKeyFrameBuilder = (direction) => keyframes`
 `;
 
 const walkingAnimations = css`
-    animation: ${({ direction }) => walkingKeyFrameBuilder(direction)} 0.25s steps(8);
+    animation: ${({ direction }) => walkingKeyFrameBuilder(direction)} ${({ speed }) => speed ? speed : '0.25'}s steps(8);
 `;
 
 const backgrounds = css`

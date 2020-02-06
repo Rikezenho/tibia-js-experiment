@@ -9,6 +9,7 @@ export const metadata = {
     interval: 5 * 1000,
     duration: 30 * 1000,
     animationDuration: 1000,
+    message: `You are poisoned.`,
 };
 
 const Poisoned = (props = {}) => {

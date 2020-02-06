@@ -82,6 +82,142 @@ const lake = {
     },
 };
 
+const sand = {
+    /* -- borders -- */
+    '7:8:0': {
+        items: [
+            'tiles:Grass',
+            'tiles:SandBorder.TopLeftTip',
+        ]
+    },
+    '8:8:0': {
+        items: [
+            'tiles:Grass',
+            'tiles:SandBorder.TopBorder',
+        ]
+    },
+    '9:8:0': {
+        items: [
+            'tiles:Grass',
+            'tiles:SandBorder.TopBorder',
+        ]
+    },
+    '10:8:0': {
+        items: [
+            'tiles:Grass',
+            'tiles:SandBorder.TopBorder',
+        ]
+    },
+    '11:8:0': {
+        items: [
+            'tiles:Grass',
+            'tiles:SandBorder.TopBorder',
+        ]
+    },
+    '12:8:0': {
+        items: [
+            'tiles:Grass',
+            'tiles:SandBorder.TopRightTip',
+        ]
+    },
+    '12:9:0': {
+        items: [
+            'tiles:Grass',
+            'tiles:SandBorder.RightBorder',
+        ]
+    },
+    '12:10:0': {
+        items: [
+            'tiles:Grass',
+            'tiles:SandBorder.BottomLeftTip',
+        ]
+    },
+    '11:10:0': {
+        items: [
+            'tiles:Grass',
+            'tiles:SandBorder.TopLeftCorner',
+        ]
+    },
+    '11:11:0': {
+        items: [
+            'tiles:Grass',
+            'tiles:SandBorder.BottomLeftTip',
+        ]
+    },
+    '10:11:0': {
+        items: [
+            'tiles:Grass',
+            'tiles:SandBorder.BottomBorder',
+        ]
+    },
+    '9:11:0': {
+        items: [
+            'tiles:Grass',
+            'tiles:SandBorder.BottomBorder',
+        ]
+    },
+    '8:11:0': {
+        items: [
+            'tiles:Grass',
+            'tiles:SandBorder.BottomBorder',
+        ]
+    },
+    '7:11:0': {
+        items: [
+            'tiles:Grass',
+            'tiles:SandBorder.BottomRightTip',
+        ]
+    },
+    '7:10:0': {
+        items: [
+            'tiles:Grass',
+            'tiles:SandBorder.LeftBorder',
+        ]
+    },
+    '7:9:0': {
+        items: [
+            'tiles:Grass',
+            'tiles:SandBorder.LeftBorder',
+        ]
+    },
+    /* -- inside -- */
+    '8:9:0': {
+        items: [
+            'tiles:Sand',
+        ]
+    },
+    '9:9:0': {
+        items: [
+            'tiles:Sand',
+        ]
+    },
+    '10:9:0': {
+        items: [
+            'tiles:Sand',
+        ]
+    },
+    '11:9:0': {
+        items: [
+            'tiles:Sand',
+        ]
+    },
+    '8:10:0': {
+        items: [
+            'tiles:Sand',
+        ]
+    },
+    '9:10:0': {
+        items: [
+            'tiles:Sand',
+        ]
+    },
+    '10:10:0': {
+        items: [
+            'tiles:Sand',
+        ]
+    },
+};
+
 for (let x = mapInfo.minX; x < mapInfo.maxX; x++) {
     for (let y = mapInfo.minY; y < mapInfo.maxY; y++) {
         let stack = [
@@ -91,6 +227,11 @@ for (let x = mapInfo.minX; x < mapInfo.maxX; x++) {
         const lakeSqm = lake[`${x}:${y}:0`];
         if (lakeSqm) {
             stack = lakeSqm.items;
+        }
+        
+        const sandSqm = sand[`${x}:${y}:0`];
+        if (sandSqm) {
+            stack = sandSqm.items;
         }
 
         const item = tileItems[`${x}:${y}:0`];
