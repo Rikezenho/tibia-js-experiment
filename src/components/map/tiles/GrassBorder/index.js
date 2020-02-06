@@ -14,6 +14,7 @@ const GrassBorder = (props = {}) => {
 
 export const metadata = {
     walkable: true,
+    slow: 0.15,
 };
 
 export default GrassBorder;
