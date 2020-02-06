@@ -42,3 +42,5 @@ https://tibia-js.netlify.com
 - [ ] Light system
 - [ ] Map following character system
 - [ ] Scripting system
+- [ ] Walking speed depending on where the character is walking
+- [ ] On screen HUD for character information
