@@ -17,7 +17,7 @@ https://tibia-js.netlify.com
 - [x] Name and life bars
 - [x] Map system with z-index
 - [x] Tibia things as components (with styled-components too!)
-- [ ] More ground tiles
+- [x] More ground tiles
 - [x] Water tiles
 - [ ] Animated water tiles
 - [x] Tile border system
@@ -44,5 +44,5 @@ https://tibia-js.netlify.com
 - [ ] Scripting system
 - [ ] Leveling system
 - [ ] Skills upgrade system
-- [ ] Walking speed depending on where the character is walking
+- [x] Walking speed depending on which SQM the character is going
 - [ ] On screen HUD for character information
