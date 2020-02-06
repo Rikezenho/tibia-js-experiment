@@ -1,8 +1,19 @@
 import React from 'react';
-import VisualElement from './visual';
+import VisualElements from './visual';
 
-const Grass = (props = {}) => {
-    return <VisualElement { ...props } />;
+const GrassBorder = (props = {}) => {
+    const { type } = props;
+    if (typeof VisualElements[type] !== 'function') {
+        console.error(`WARNING: GrassBorder with type ${type} not found!`);
+        return null;
+    }
+    const VisualElement = VisualElements[type]();
+
+    return <VisualElement {...props} />;
 };
 
-export default Grass;
+export const metadata = {
+    walkable: true,
+};
+
+export default GrassBorder;

@@ -18,39 +18,69 @@ const tileItems = {
 };
 const lake = {
     '5:5:0': {
-        items: ['tiles:Water']
+        items: [
+            'tiles:Water',
+            'tiles:GrassBorder.TopLeftCorner',
+        ]
     },
     '5:6:0': {
-        items: ['tiles:Water']
+        items: [
+            'tiles:Water',
+            'tiles:GrassBorder.LeftBorder1',
+        ]
     },
     '5:7:0': {
-        items: ['tiles:Water']
+        items: [
+            'tiles:Water',
+            'tiles:GrassBorder.BottomLeftCorner',
+        ]
     },
     '6:5:0': {
-        items: ['tiles:Water']
+        items: [
+            'tiles:Water',
+            'tiles:GrassBorder.TopBorder1',
+        ]
     },
     '6:6:0': {
-        items: ['tiles:Water']
+        items: ['tiles:Water',]
     },
     '6:7:0': {
-        items: ['tiles:Water']
+        items: [
+            'tiles:Water',
+            'tiles:GrassBorder.BottomBorder1',
+        ]
     },
     '7:5:0': {
-        items: ['tiles:Water']
+        items: [
+            'tiles:Water',
+            'tiles:GrassBorder.TopRightCorner',
+        ]
     },
     '7:6:0': {
-        items: ['tiles:Water']
+        items: [
+            'tiles:Water',
+            'tiles:GrassBorder.TopRightTip',
+        ]
     },
     '7:7:0': {
-        items: ['tiles:Water']
+        items: [
+            'tiles:Water',
+            'tiles:GrassBorder.BottomBorder2',
+        ]
     },
     '8:7:0': {
-        items: ['tiles:Water']
+        items: [
+            'tiles:Water',
+            'tiles:GrassBorder.BottomRightCorner',
+        ]
     },
     '8:6:0': {
-        items: ['tiles:Water']
+        items: [
+            'tiles:Water',
+            'tiles:GrassBorder.TopRightCorner',
+        ]
     },
-}
+};
 
 for (let x = mapInfo.minX; x < mapInfo.maxX; x++) {
     for (let y = mapInfo.minY; y < mapInfo.maxY; y++) {

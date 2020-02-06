@@ -10,7 +10,7 @@ const mapParser = () => {
     Object.keys(map).forEach((item, index) => {
         const [x, y, z] = item.split(':');
         const stack = map[item];
-        parsedMap[item] = prepareStack(stack, { index, left: x * tileWidth, top: y * tileHeight });
+        parsedMap[item] = prepareStack(stack, { index, left: x * tileWidth, top: y * tileHeight, axis: item });
     });
 
     return {

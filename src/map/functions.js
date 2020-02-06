@@ -9,13 +9,25 @@ const components = {
     terrain,
 };
 
-export const prepareStack = (stack = [], { index, top, left }) =>
+export const prepareStack = (stack = [], { index, top, left, axis }) =>
     stack.map((item, currIndex) => {
-            const [type, name] = (item || '').split(':');
+            let [type, name] = (item || '').split(':');
             if (!type || !name) {
                 return null;
             }
-            const component = components[type][name].index;
+            const hasComponentSubType = name.includes('.');
+            const componentNames = hasComponentSubType ? name.split('.') : [name];
+            const componentSubType = hasComponentSubType ? name.split('.').pop() : null;
+            
+            name = hasComponentSubType ? componentNames[0] : name;
+
+            const component = components[type][name] ? components[type][name].index : null;
+
+            if (!component) {
+                console.error(`WARNING: ${item} not found in axis ${axis}!`);
+                return null;
+            }
+            
             const reactElement = React.createElement(component.default, {
                 ...components[type].base.default,
                 ...component.metadata,
@@ -24,6 +36,8 @@ export const prepareStack = (stack = [], { index, top, left }) =>
                     zIndex: currIndex,
                     top,
                     left,
+                    type: componentSubType,
+                    'data-axis': axis,
                 }
             });
             return reactElement;
@@ -36,7 +50,7 @@ export const shouldNotCompleteMove = (map = {}, { x, y }) => {
         typeof map[`${x}:${y}:0`] === 'undefined'
         || (
             map[`${x}:${y}:0`]
-            && map[`${x}:${y}:0`].some((stackItem) => stackItem.props.walkable === false)
+            && !map[`${x}:${y}:0`].some((stackItem) => stackItem.props.walkable === true)
             && map[`${x}:${y}:0`].some((stackItem) => !stackItem.props.border)
         )
     );
