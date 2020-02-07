@@ -8,7 +8,7 @@ import { setPlayerPos } from '../../../store/actions/player';
 import { setMessage } from '../../../store/actions/hud';
 import { store } from '../../../store';
 
-const calculateSpeed = (speed) => 1/speed * 1;
+const calculateSpeed = (speed) => 1/(speed/100) * 1;
 
 const Player = (props = {}) => {
     const {
