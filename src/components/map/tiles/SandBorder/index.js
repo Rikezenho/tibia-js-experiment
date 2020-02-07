@@ -9,7 +9,7 @@ const SandBorder = (props = {}) => {
     }
     const VisualElement = VisualElements[type]();
 
-    return <VisualElement {...props} />;
+    return <VisualElement className='sqm' {...props} />;
 };
 
 export const metadata = {

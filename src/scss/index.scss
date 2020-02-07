@@ -32,4 +32,27 @@ body {
         z-index: 3;
         pointer-events: none;
     }
+
+    &.debugMode {
+        
+        .sqm {
+            &:hover {
+                &:before {
+                    border: 2px solid red;
+                    content: attr(data-axis);
+                    color: #FFF;
+                    font-size: 9px;
+                    text-shadow: 1px 1px 1px #000, -1px -1px 1px #000, 1px -1px 1px #000, -1px 1px 1px #000;
+                    line-height: 32px;
+                    text-align: center;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    left: 0;
+                    bottom: 0;
+                    z-index: 999;
+                }
+            }
+        }
+    }
 }

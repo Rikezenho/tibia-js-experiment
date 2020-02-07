@@ -10,7 +10,7 @@ export const RandomTile = (name, VisualElements = {}, props) => {
     const randomKey = keys[Math.floor(Math.random() * keys.length)];
 
     const VisualElement = VisualElements[randomKey]();
-    return <VisualElement {...props} />;
+    return <VisualElement className='sqm' {...props} />;
 };
 
 export default {

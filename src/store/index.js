@@ -1,5 +1,8 @@
 import React, { createContext, useReducer } from 'react';
-import { setMessage } from './actions/hud';
+import { log } from '../functions/gameUtils';
+import developerReducer from './reducers/developer';
+import hudReducer from './reducers/hud';
+import playerReducer from './reducers/player';
 
 const initialState = {
     currentPlayer: {
@@ -21,37 +24,37 @@ const initialState = {
     },
     map: {
         tileWidth: 32,
+    },
+    developer: {
+        debugMode: false,
     }
 };
 
 const store = createContext(initialState);
 const { Provider } = store;
 
-const StateProvider = ( { children } ) => {
-  const [state, dispatch] = useReducer((state, action) => {
-    switch(action.type) {
-        case 'LOSE_HP':
-            return { ...state, player: { ...state.player, currentHealth: state.player.currentHealth - action.payload } };
-        case 'LOSE_MANA':
-            return { ...state, player: { ...state.player, currentMana: state.player.currentMana - action.payload } };
-        case 'ADD_HP':
-            return { ...state, player: { ...state.player, currentHealth: state.player.currentHealth + action.payload } };
-        case 'ADD_MANA':
-            return { ...state, player: { ...state.player, currentMana: state.player.currentMana + action.payload } };
-        case 'PERMANENTLY_ADD_HP':
-            return { ...state, player: { ...state.player, maxHealth: state.player.maxHealth + action.payload } };
-        case 'PERMANENTLY_ADD_MANA':
-            return { ...state, player: { ...state.player, maxMana: state.player.maxMana + action.payload } };
-        case 'SET_PLAYER_POS':
-            return { ...state, currentPlayer: { ...state.currentPlayer, pos: action.payload } };
-        case 'SET_MESSAGE':
-            return { ...state, hud: { message: action.payload } };
-        default:
-            throw new Error();
+const StateProvider = ({ children }) => {
+    const mappedCallbacks = {
+        ...developerReducer,
+        ...hudReducer,
+        ...playerReducer,
     };
-  }, initialState);
 
-  return <Provider value={{ state, dispatch }}>{children}</Provider>;
+    const [state, dispatch] = useReducer((state, action) => {
+        if (!action.type) {
+            throw new Error('Action type missing in dispatch!');
+        }
+        if (mappedCallbacks[action.type]) {
+            if (state.developer.debugMode) {
+                log('store', `Action ${action.type} dispatched!`, action.payload);
+            }
+            return mappedCallbacks[action.type](state, action);
+        } else {
+            throw new Error('Action type not found!');
+        }
+    }, initialState);
+
+    return <Provider value={{ state, dispatch }}>{children}</Provider>;
 };
 
 export { store, StateProvider };
