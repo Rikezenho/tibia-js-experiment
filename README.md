@@ -10,6 +10,15 @@ Use WASD keys to move character.
 
 https://tibia-js.netlify.com
 
+## Toggle debug mode
+
+With debug mode, you can see more messages and console information, and even view SQM information (x, y and z axis) when hovering mouse through the map.
+
+Simply execute on your DevTools console:
+```
+utils.toggleDebugMode();
+```
+
 ## Roadmap
 
 - [x] Walkable player (with CSS animation!)
