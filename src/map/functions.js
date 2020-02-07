@@ -45,7 +45,6 @@ export const prepareStack = (stack = [], { index, top, left, axis }) =>
         .filter((item) => !!item);
 
 export const shouldNotCompleteMove = (map = {}, { x, y }) => {
-    console.log(map[`${x}:${y}:0`]);
     return (
         typeof map[`${x}:${y}:0`] === 'undefined'
         || (

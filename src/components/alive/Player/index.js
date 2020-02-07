@@ -7,6 +7,7 @@ import parsedMap from '../../../map';
 import { setPlayerPos } from '../../../store/actions/player';
 import { setMessage } from '../../../store/actions/hud';
 import { store } from '../../../store';
+import { log } from '../../../functions/gameUtils';
 
 const calculateSpeed = (speed) => 1/(speed/100) * 1;
 
@@ -33,7 +34,10 @@ const Player = (props = {}) => {
         },
         map: {
             tileWidth
-        }
+        },
+        developer: {
+            debugMode
+        },
     } = globalState;
 
     const [direction, setDirection] = React.useState('down');
@@ -115,7 +119,9 @@ const Player = (props = {}) => {
 
     const calculatedSpeed = React.useMemo(() => {
         const finalSpeed = calculateSpeed(speed);
-        console.log(`Speed: ${finalSpeed}s`);
+        if (debugMode) {
+            log('player', `Changed speed from ${baseSpeed} to ${speed} - animation/transition time: ${finalSpeed}s`);
+        }
         return finalSpeed;
     }, [speed]);
 
