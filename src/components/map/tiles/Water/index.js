@@ -1,8 +1,9 @@
 import React from 'react';
-import VisualElement from './visual';
+import { RandomTile } from '../base';
+import VisualElements from './visual';
 
 const Water = (props = {}) => {
-    return <VisualElement { ...props } />;
+    return RandomTile('Water', VisualElements, props);
 };
 
 export const metadata = {

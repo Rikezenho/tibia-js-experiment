@@ -9,7 +9,7 @@ const animationKeyframes = keyframes`
     100% {
         background-position: 0 -100%;
     }
-`
+`;
 
 export default styled(Base)`
     background-image: url(${img});
