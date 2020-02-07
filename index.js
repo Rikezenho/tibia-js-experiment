@@ -63,6 +63,11 @@ const App = () => {
     </div>);
 };
 
+window.utils = {};
+window.utils.toggleDebugMode = () => {
+    window.dispatchEvent(new Event('developer:debugMode'));
+};
+
 ReactDOM.render(
     <StateProvider>
         <App />
