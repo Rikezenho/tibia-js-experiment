@@ -46,7 +46,7 @@ const StateProvider = ({ children }) => {
         }
         if (mappedCallbacks[action.type]) {
             if (state.developer.debugMode) {
-                log('store', `Action ${action.type} dispatched!`, action.payload);
+                log('store', `Action ${action.type} dispatched!`, 'Action payload:', action.payload);
             }
             return mappedCallbacks[action.type](state, action);
         } else {
