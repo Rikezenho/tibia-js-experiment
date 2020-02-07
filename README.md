@@ -19,7 +19,7 @@ https://tibia-js.netlify.com
 - [x] Tibia things as components (with styled-components too!)
 - [x] More ground tiles
 - [x] Water tiles
-- [ ] Animated water tiles
+- [x] Animated water tiles
 - [x] Tile border system
 - [x] Tile "randomizer" (e.g.: for more than one sprite for grass)
 - [ ] Buildings
