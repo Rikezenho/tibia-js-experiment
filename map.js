@@ -1,8 +1,8 @@
 export const mapInfo = {
     minX: 0,
     minY: 0,
-    maxX: 15,
-    maxY: 15,
+    maxX: 20,
+    maxY: 20,
     minZ: -7,
     maxZ: 8,
 };

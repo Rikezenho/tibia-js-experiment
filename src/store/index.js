@@ -5,12 +5,6 @@ import hudReducer from './reducers/hud';
 import playerReducer from './reducers/player';
 
 const initialState = {
-    currentPlayer: {
-        pos: {
-            x: 2,
-            y: 2,
-        },
-    },
     player: {
         name: 'Player',
         maxHealth: 100,
@@ -27,6 +21,12 @@ const initialState = {
     },
     developer: {
         debugMode: false,
+    },
+    viewport: {
+        initialX: 0,
+        iniitalY: 0,
+        finalX: 7,
+        finalY: 7,
     }
 };
 
