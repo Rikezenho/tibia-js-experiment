@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Base from '../../../../../styles/tile';
 
 import topBorder32 from './item_980.png';
@@ -16,44 +16,52 @@ import topRightTip32 from './item_986.png';
 import bottomLeftTip32 from './item_984.png';
 import bottomRightTip32 from './item_985.png';
 
-export default {
+export const options = {
     /* -- edges -- */
-    TopBorder: () => styled(Base)`
+    TopBorder: css`
         background-image: url(${topBorder32});
     `,
-    LeftBorder: () => styled(Base)`
+    LeftBorder: css`
         background-image: url(${leftBorder32});
     `,
-    BottomBorder: () => styled(Base)`
+    BottomBorder: css`
         background-image: url(${bottomBorder32});
     `,
-    RightBorder: () => styled(Base)`
+    RightBorder: css`
         background-image: url(${rightBorder32});
     `,
     /* -- corners -- */
-    TopLeftCorner: () => styled(Base)`
+    TopLeftCorner: css`
         background-image: url(${topLeftCorner32});
     `,
-    TopRightCorner: () => styled(Base)`
+    TopRightCorner: css`
         background-image: url(${topRightCorner32});
     `,
-    BottomLeftCorner: () => styled(Base)`
+    BottomLeftCorner: css`
         background-image: url(${bottomLeftCorner32});
     `,
-    BottomRightCorner: () => styled(Base)`
+    BottomRightCorner: css`
         background-image: url(${bottomRightCorner32});
     `,
     /* -- tips -- */
-    TopLeftTip: () => styled(Base)`
+    TopLeftTip: css`
         background-image: url(${topLeftTip32});
     `,
-    TopRightTip: () => styled(Base)`
+    TopRightTip: css`
         background-image: url(${topRightTip32});
     `,
-    BottomLeftTip: () => styled(Base)`
+    BottomLeftTip: css`
         background-image: url(${bottomLeftTip32});
     `,
-    BottomRightTip: () => styled(Base)`
+    BottomRightTip: css`
         background-image: url(${bottomRightTip32});
     `,
 };
+
+export default styled(Base)`
+    ${({ type }) => (
+        type
+            ? options[type]
+            : options[Object.keys(options).shift()]
+    )}
+`;

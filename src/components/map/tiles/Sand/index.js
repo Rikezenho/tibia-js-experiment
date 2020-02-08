@@ -1,9 +1,10 @@
 import React from 'react';
-import { RandomTile } from '../base';
-import VisualElements from './visual';
+import { getRandomTile } from '../base';
+import VisualElement, { options } from './visual';
 
 const Sand = (props = {}) => {
-    return RandomTile('Sand', VisualElements, props);
+    const randomTile = getRandomTile('Sand', options);
+    return <VisualElement {...props} tile={randomTile} className='sqm' />;
 };
 
 export const metadata = {

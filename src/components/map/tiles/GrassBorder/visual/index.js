@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Base from '../../../../../styles/tile';
 
 import topBorder64 from './item_304.png';
@@ -16,60 +16,68 @@ import topRightTip32 from './item_309.png';
 import bottomLeftTip32 from './item_310.png';
 import bottomRightTip32 from './item_311.png';
 
-export default {
+export const options = {
     /* -- edges -- */
-    TopBorder1: () => styled(Base)`
+    TopBorder1: css`
         background-image: url(${topBorder64});
     `,
-    TopBorder2: () => styled(Base)`
+    TopBorder2: css`
         background-image: url(${topBorder64});
         background-position: -32px 0;
     `,
-    LeftBorder1: () => styled(Base)`
+    LeftBorder1: css`
         background-image: url(${leftBorder64});
     `,
-    LeftBorder2: () => styled(Base)`
+    LeftBorder2: css`
         background-image: url(${leftBorder64});
         background-position: 0 -32px;
     `,
-    BottomBorder1: () => styled(Base)`
+    BottomBorder1: css`
         background-image: url(${bottomBorder64});
     `,
-    BottomBorder2: () => styled(Base)`
+    BottomBorder2: css`
         background-image: url(${bottomBorder64});
         background-position: -32px 0;
     `,
-    RightBorder1: () => styled(Base)`
+    RightBorder1: css`
         background-image: url(${rightBorder64});
     `,
-    RightBorder2: () => styled(Base)`
+    RightBorder2: css`
         background-image: url(${rightBorder64});
         background-position: 0 -32px;
     `,
     /* -- corners -- */
-    TopLeftCorner: () => styled(Base)`
+    TopLeftCorner: css`
         background-image: url(${topLeftCorner32});
     `,
-    TopRightCorner: () => styled(Base)`
+    TopRightCorner: css`
         background-image: url(${topRightCorner32});
     `,
-    BottomLeftCorner: () => styled(Base)`
+    BottomLeftCorner: css`
         background-image: url(${bottomLeftCorner32});
     `,
-    BottomRightCorner: () => styled(Base)`
+    BottomRightCorner: css`
         background-image: url(${bottomRightCorner32});
     `,
     /* -- tips -- */
-    TopLeftTip: () => styled(Base)`
+    TopLeftTip: css`
         background-image: url(${topLeftTip32});
     `,
-    TopRightTip: () => styled(Base)`
+    TopRightTip: css`
         background-image: url(${topRightTip32});
     `,
-    BottomLeftTip: () => styled(Base)`
+    BottomLeftTip: css`
         background-image: url(${bottomLeftTip32});
     `,
-    BottomRightTip: () => styled(Base)`
+    BottomRightTip: css`
         background-image: url(${bottomRightTip32});
     `,
 };
+
+export default styled(Base)`
+    ${({ type }) => (
+        type
+            ? options[type]
+            : options[Object.keys(options).shift()]
+    )}
+`;

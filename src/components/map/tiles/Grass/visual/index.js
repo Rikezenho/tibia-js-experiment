@@ -1,21 +1,27 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Base from '../../../../../styles/tile';
 import img from './sprite.png';
 
-export default {
-    Grass1: () => styled(Base)`
-        background-image: url(${img});
+export const options = {
+    Grass1: css`
+        background-position: 0 0;
     `,
-    Grass2: () => styled(Base)`
-        background-image: url(${img});
+    Grass2: css`
         background-position: 0 -32px;
     `,
-    Grass3: () => styled(Base)`
-        background-image: url(${img});
+    Grass3: css`
         background-position: -64px 0;
     `,
-    Grass4: () => styled(Base)`
-        background-image: url(${img});
+    Grass4: css`
         background-position: -64px -32px;
     `,
 };
+
+export default styled(Base)`
+    background-image: url(${img});
+    ${({ tile }) => (
+        tile
+            ? options[tile]
+            : options[Object.keys(options).shift()]
+    )}
+`;

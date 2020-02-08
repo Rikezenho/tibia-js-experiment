@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import Base from '../../../../../styles/tile';
 
 import sprite1 from './item_629.png';
@@ -17,29 +17,36 @@ const animationKeyframes = keyframes`
     }
 `;
 
-export default {
-    Water1: () => styled(Base)`
+const animationRule = css`
+    animation: ${animationKeyframes} 2s steps(12) infinite;
+`;
+
+export const options = {
+    Water1: `
         background-image: url(${sprite1});
-        animation: ${animationKeyframes} 2s steps(12) infinite;
     `,
-    Water2: () => styled(Base)`
+    Water2: `
         background-image: url(${sprite2});
-        animation: ${animationKeyframes} 2s steps(12) infinite;
     `,
-    Water3: () => styled(Base)`
+    Water3: `
         background-image: url(${sprite3});
-        animation: ${animationKeyframes} 2s steps(12) infinite;
     `,
-    Water4: () => styled(Base)`
+    Water4: `
         background-image: url(${sprite4});
-        animation: ${animationKeyframes} 2s steps(12) infinite;
     `,
-    Water5: () => styled(Base)`
+    Water5: `
         background-image: url(${sprite5});
-        animation: ${animationKeyframes} 2s steps(12) infinite;
     `,
-    Water6: () => styled(Base)`
+    Water6: `
         background-image: url(${sprite6});
-        animation: ${animationKeyframes} 2s steps(12) infinite;
-    `,
+    `
 };
+
+export default styled(Base)`
+    ${({ tile }) => (
+        tile
+            ? options[tile]
+            : options[Object.keys(options).shift()]
+    )}
+    ${animationRule}
+`;

@@ -1,15 +1,14 @@
 import React from 'react';
-import VisualElements from './visual';
+import VisualElement, { options } from './visual';
 
 const SandBorder = (props = {}) => {
     const { type } = props;
-    if (typeof VisualElements[type] !== 'function') {
+    if (typeof options[type] === 'undefined') {
         console.error(`WARNING: SandBorder with type ${type} not found!`);
         return null;
     }
-    const VisualElement = VisualElements[type]();
 
-    return <VisualElement className='sqm' {...props} />;
+    return <VisualElement {...props} className='sqm' />;
 };
 
 export const metadata = {
