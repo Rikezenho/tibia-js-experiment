@@ -5,12 +5,6 @@ import hudReducer from './reducers/hud';
 import playerReducer from './reducers/player';
 
 const initialState = {
-    currentPlayer: {
-        pos: {
-            x: 2,
-            y: 2,
-        },
-    },
     player: {
         name: 'Player',
         maxHealth: 100,
@@ -18,6 +12,13 @@ const initialState = {
         maxMana: 100,
         currentMana: 100,
         baseSpeed: 300,
+        currentSpeed: 0,
+        walking: false,
+        direction: 'down',
+        pos: {
+            x: 0,
+            y: 0,
+        },
     },
     hud: {
         message: '',

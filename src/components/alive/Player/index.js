@@ -9,31 +9,14 @@ import { setMessage } from '../../../store/actions/hud';
 import { store } from '../../../store';
 import { log } from '../../../functions/gameUtils';
 
-const calculateSpeed = (speed) => 1/(speed/100) * 1;
+const calculateSpeed = speed => 1/(speed/100) * 1;
 
-const Player = (props = {}) => {
-    const {
-        upKey,
-        leftKey,
-        downKey,
-        rightKey,
-    } = props;
-    
+const useWalkWithKeyboard = () => {
     const { state: globalState, dispatch } = React.useContext(store);
     const {
-        currentPlayer: {
-            pos,
-        },
         player: {
-            name,
-            maxHealth,
-            maxMana,
-            currentHealth,
-            currentMana,
             baseSpeed,
-        },
-        map: {
-            tileWidth
+            pos,
         },
         developer: {
             debugMode
@@ -42,83 +25,8 @@ const Player = (props = {}) => {
 
     const [direction, setDirection] = React.useState('down');
     const [walking, setWalking] = React.useState(false);
-    const [cssPosition, setCssPosition] = React.useState({
-        left: pos.x * tileWidth,
-        top: pos.y * tileWidth,
-    });
     const [speed, setSpeed] = React.useState(baseSpeed);
-    const [canWalk, allowWalk] = React.useState(true);
     const [effects, setEffects] = React.useState({});
-
-    const walk = (newDirection) => {
-        if (!canWalk) {
-            return;
-        }
-        allowWalk(false);
-        let newPos = {};
-
-        switch (newDirection) {
-            case 'up':
-                newPos = { x: pos.x, y: pos.y - 1 };
-            break;
-            case 'down':
-                newPos = { x: pos.x, y: pos.y + 1 };
-            break;
-            case 'left':
-                newPos = { x: pos.x - 1, y: pos.y };
-            break;
-            case 'right':
-                newPos = { x: pos.x + 1, y: pos.y };
-            break;
-        }
-        if (shouldNotCompleteMove(parsedMap.map, newPos)) {
-            allowWalk(true);
-            return;
-        }
-
-        const { effects: sqmEffects, slow } = getFutureSqmInfo(parsedMap.map, newPos);
-        const finalEffects = { ...effects } || {};
-        sqmEffects.forEach((item) => {
-            dispatch(setMessage(item.metadata.message));
-            // if (finalEffects[item.name]) {
-            //     clearTimeout(finalEffects[item.name].wipeTimeout);
-            //     delete state.effects[item.name];
-            //     setState(state => ({ ...state, effects: state.effects }));
-            // }
-            finalEffects[item.name] = {
-                component: item.component,
-                wipeTimeout: setTimeout(() => {
-                    delete effects[item.name];
-                    setEffects(effects);
-                }, item.metadata.duration)
-            };
-        }, {});
-
-        setDirection(newDirection);
-        setWalking(true);
-        setCssPosition({
-            left: newPos.x * tileWidth,
-            top: newPos.y * tileWidth,
-        });
-
-        const speedTime = slow ? baseSpeed - (baseSpeed * slow) : baseSpeed;
-        setSpeed(speedTime);
-        setEffects(finalEffects);
-
-        dispatch(setPlayerPos(newPos));
-
-        setTimeout(() => {
-            setWalking(false);
-            allowWalk(true);
-        }, calculateSpeed(speedTime) * 1000);
-    };
-
-    React.useEffect(() => {
-        if (upKey) walk('up');
-        if (downKey) walk('down');
-        if (leftKey) walk('left');
-        if (rightKey) walk('right');
-    }, [upKey, downKey, leftKey, rightKey]);
 
     const calculatedSpeed = React.useMemo(() => {
         const finalSpeed = calculateSpeed(speed);
@@ -127,6 +35,118 @@ const Player = (props = {}) => {
         }
         return finalSpeed;
     }, [speed]);
+
+    React.useEffect(() => {
+        const fn = (event) => {
+            if (walking) {
+                return;
+            }
+
+            let newDirection;
+            let newPos = {};
+
+            switch (`${event.key}`.toLowerCase()) {
+                case 'w':
+                    newDirection = 'up';
+                    newPos = { x: pos.x, y: pos.y - 1 };
+                break;
+                case 's':
+                    newDirection = 'down';
+                    newPos = { x: pos.x, y: pos.y + 1 };
+                break;
+                case 'a':
+                    newDirection = 'left';
+                    newPos = { x: pos.x - 1, y: pos.y };
+                break;
+                case 'd':
+                    newDirection = 'right';
+                    newPos = { x: pos.x + 1, y: pos.y };
+                break;
+            }
+  
+            setDirection(newDirection);
+            setWalking(true);
+
+            if (shouldNotCompleteMove(parsedMap.map, newPos)) {
+                setWalking(false);
+                return;
+            }
+
+            const { effects: sqmEffects, slow } = getFutureSqmInfo(parsedMap.map, newPos);
+            const finalEffects = { ...effects } || {};
+            sqmEffects.forEach((item) => {
+                dispatch(setMessage(item.metadata.message));
+                // if (finalEffects[item.name]) {
+                //     clearTimeout(finalEffects[item.name].wipeTimeout);
+                //     delete state.effects[item.name];
+                //     setState(state => ({ ...state, effects: state.effects }));
+                // }
+                finalEffects[item.name] = {
+                    component: item.component,
+                    wipeTimeout: setTimeout(() => {
+                        delete effects[item.name];
+                        setEffects(effects);
+                    }, item.metadata.duration)
+                };
+            }, {});
+
+            const speedTime = slow ? baseSpeed - (baseSpeed * slow) : baseSpeed;
+            setSpeed(speedTime);
+            setEffects(finalEffects);
+
+            dispatch(setPlayerPos(newPos));
+        };
+
+        window.addEventListener('keypress', fn);
+
+        return () => {
+            window.removeEventListener('keypress', fn);
+        };
+    }, [pos, walking]);
+
+    React.useEffect(() => {
+        if (walking === true) {
+            setTimeout(() => {
+                setWalking(false);
+            }, calculatedSpeed * 1000);
+        }
+    }, [walking]);
+
+    return {
+        direction,
+        walking,
+        calculatedSpeed,
+        effects,
+    }
+};
+
+const Player = (props = {}) => {    
+    const { state: globalState } = React.useContext(store);
+    const {
+        player: {
+            name,
+            maxHealth,
+            maxMana,
+            currentHealth,
+            currentMana,
+            pos,
+        },
+        map: {
+            tileWidth
+        },
+    } = globalState;
+
+    const {
+        walking,
+        calculatedSpeed,
+        direction,
+        effects,
+    } = useWalkWithKeyboard();
+
+    const cssPosition = React.useMemo(() => ({
+        left: pos.x * tileWidth,
+        top: pos.y * tileWidth,
+    }), [pos]);
 
     return <div style={{ position: 'relative' }}>
         <VisualElement {...{

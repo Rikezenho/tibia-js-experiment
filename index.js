@@ -3,7 +3,6 @@ import "@babel/polyfill";
 import React from 'react';
 import ReactDOM from 'react-dom';
 import parsedMap from './src/map';
-import useKeyPress from './src/hooks/useKeyPress';
 import Player from './src/components/alive/Player';
 import { toggleDebugMode } from './src/store/actions/developer';
 import { store, StateProvider } from './src/store';
@@ -24,9 +23,6 @@ const App = () => {
     
     const { state: globalState, dispatch } = React.useContext(store);
     const {
-        currentPlayer: {
-            pos
-        },
         developer: {
             debugMode
         },
@@ -38,24 +34,10 @@ const App = () => {
         });
     }, []);
 
-    const upKey = useKeyPress('w');
-    const leftKey = useKeyPress('a');
-    const downKey = useKeyPress('s');
-    const rightKey = useKeyPress('d');
-
     return (<div className={`game ${debugMode ? 'debugMode' : ''}`} style={{ width: maxX * tileWidth, height: maxY * tileHeight }}>
         <ScreenMessage />
         <React.Fragment>
-            <Player
-                {...{
-                    top: pos.y * tileHeight,
-                    left: pos.x * tileWidth,
-                    upKey,
-                    leftKey,
-                    downKey,
-                    rightKey
-                }}
-            />
+            <Player />
             {
                 Object.values(map)
             }

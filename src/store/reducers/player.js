@@ -18,6 +18,6 @@ export default {
         return { ...state, player: { ...state.player, maxMana: state.player.maxMana + action.payload } };
     },
     'SET_PLAYER_POS': (state, action) => {
-        return { ...state, currentPlayer: { ...state.currentPlayer, pos: action.payload } };
+        return { ...state, player: { ...state.player, pos: action.payload } };
     },
 };
