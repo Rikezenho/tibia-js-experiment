@@ -17,7 +17,7 @@ const initialState = {
         currentHealth: 100,
         maxMana: 100,
         currentMana: 100,
-        baseSpeed: 200,
+        baseSpeed: 300,
     },
     hud: {
         message: '',

@@ -7,7 +7,7 @@ const Sand = (props = {}) => {
 };
 
 export const metadata = {
-    slow: 0.7,
+    slow: 0.5,
 };
 
 export default Sand;

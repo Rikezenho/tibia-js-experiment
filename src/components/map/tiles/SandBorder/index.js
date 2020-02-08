@@ -14,7 +14,7 @@ const SandBorder = (props = {}) => {
 
 export const metadata = {
     walkable: true,
-    slow: 0.5,
+    slow: 0.35,
 };
 
 export default SandBorder;

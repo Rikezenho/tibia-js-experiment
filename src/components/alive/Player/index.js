@@ -100,14 +100,17 @@ const Player = (props = {}) => {
             left: newPos.x * tileWidth,
             top: newPos.y * tileWidth,
         });
-        setSpeed(slow ? baseSpeed - (baseSpeed * slow) : baseSpeed);
+
+        const speedTime = slow ? baseSpeed - (baseSpeed * slow) : baseSpeed;
+        setSpeed(speedTime);
         setEffects(finalEffects);
 
         dispatch(setPlayerPos(newPos));
+
         setTimeout(() => {
             setWalking(false);
             allowWalk(true);
-        }, 250);
+        }, calculateSpeed(speedTime) * 1000);
     };
 
     React.useEffect(() => {
