@@ -9,6 +9,10 @@ import { setMessage } from '../../../store/actions/hud';
 import { store } from '../../../store';
 import { log } from '../../../functions/gameUtils';
 import useKeyPress from '../../../hooks/useKeyPress';
+const wPressed = useKeyPress('w', false);
+const sPressed = useKeyPress('s', false);
+const aPressed = useKeyPress('a', false);
+const dPressed = useKeyPress('d', false);
 
 const calculateSpeed = speed => 1/(speed/100) * 1;
 
@@ -41,6 +45,10 @@ const useWalkWithKeyboard = () => {
     const ctrlSPressed = useKeyPress('s', true);
     const ctrlAPressed = useKeyPress('a', true);
     const ctrlDPressed = useKeyPress('d', true);
+    const wPressed = useKeyPress('w', false);
+    const sPressed = useKeyPress('s', false);
+    const aPressed = useKeyPress('a', false);
+    const dPressed = useKeyPress('d', false);
 
     React.useEffect(() => {
         if (walking) {
@@ -50,18 +58,18 @@ const useWalkWithKeyboard = () => {
         let newDirection;
         let newPos = {};
 
-        if (ctrlWPressed) {
+        if (ctrlWPressed || wPressed) {
             newDirection = 'up';
-            newPos = { x: pos.x, y: pos.y - 1 };
-        } else if (ctrlSPressed) {
+            newPos = ctrlWPressed ? { x: pos.x, y: pos.y } : { x: pos.x, y: pos.y - 1 };
+        } else if (ctrlSPressed || sPressed) {
             newDirection = 'down';
-            newPos = { x: pos.x, y: pos.y + 1 };
-        } else if (ctrlAPressed) {
+            newPos = ctrlSPressed ? { x: pos.x, y: pos.y } : { x: pos.x, y: pos.y + 1 };
+        } else if (ctrlAPressed || aPressed) {
             newDirection = 'left';
-            newPos = { x: pos.x - 1, y: pos.y };
-        } else if (ctrlDPressed) {
+            newPos = ctrlAPressed ? { x: pos.x, y: pos.y } : { x: pos.x - 1, y: pos.y };
+        } else if (ctrlDPressed || dPressed) {
             newDirection = 'right';
-            newPos = { x: pos.x + 1, y: pos.y };
+            newPos = ctrlDPressed ? { x: pos.x, y: pos.y } : { x: pos.x + 1, y: pos.y };
         }
 
         if (newDirection) {
