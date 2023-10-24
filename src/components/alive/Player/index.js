@@ -112,7 +112,14 @@ const useWalkWithKeyboard = () => {
 
       dispatch(setPlayerPos(newPos));
     }
-  }, [pos, walking, shiftWPressed, shiftSPressed, shiftAPressed, shiftDPressed]);
+  }, [
+    pos,
+    walking,
+    shiftWPressed,
+    shiftSPressed,
+    shiftAPressed,
+    shiftDPressed,
+  ]);
 
   React.useEffect(() => {
     if (walking === true) {
