@@ -5,15 +5,15 @@ export default function useKeyPress(targetKey, modifierKey, moveKey) {
   const [keyPressed, setKeyPressed] = useState(false);
 
   // If pressed key is our target key then set to true
-  function downHandler({ key, ctrlKey }) {
-    if (moveKey || (key === targetKey && ctrlKey === modifierKey)) {
+  function downHandler({ key, shiftKey }) {
+    if (moveKey || (key === targetKey && shiftKey === modifierKey)) {
       setKeyPressed(true);
     }
   }
 
   // If released key is our target key then set to false
-  const upHandler = ({ key, ctrlKey }) => {
-    if (moveKey || (key === targetKey && ctrlKey === modifierKey)) {
+  const upHandler = ({ key, shiftKey }) => {
+    if (moveKey || (key === targetKey && shiftKey === modifierKey)) {
       setKeyPressed(false);
     }
   };
