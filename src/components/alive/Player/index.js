@@ -12,10 +12,6 @@ import { setMessage } from "../../../store/actions/hud";
 import { store } from "../../../store";
 import { log } from "../../../functions/gameUtils";
 import useKeyPress from "../../../hooks/useKeyPress";
-const wPressed = useKeyPress("w", false);
-const sPressed = useKeyPress("s", false);
-const aPressed = useKeyPress("a", false);
-const dPressed = useKeyPress("d", false);
 
 const calculateSpeed = (speed) => (1 / (speed / 100)) * 1;
 
@@ -36,90 +32,85 @@ const useWalkWithKeyboard = () => {
     if (debugMode) {
       log(
         "player",
-        `Changed speed from ${baseSpeed} to ${speed} - animation/transition time: ${finalSpeed}s`,
+        `Changed speed from ${baseSpeed} to ${speed} - animation/transition time: ${finalSpeed}s`
       );
     }
     return finalSpeed;
   }, [speed]);
 
-  const shiftWPressed = useKeyPress("w", true);
-  const shiftSPressed = useKeyPress("s", true);
-  const shiftAPressed = useKeyPress("a", true);
-  const shiftDPressed = useKeyPress("d", true);
-  const wPressed = useKeyPress("w", false);
-  const sPressed = useKeyPress("s", false);
-  const aPressed = useKeyPress("a", false);
-  const dPressed = useKeyPress("d", false);
-
   React.useEffect(() => {
-    if (walking) {
-      return;
-    }
-
-    let newDirection;
-    let newPos = {};
-
-    if (shiftWPressed || wPressed) {
-      newDirection = "up";
-      newPos = shiftWPressed
-        ? { x: pos.x, y: pos.y }
-        : { x: pos.x, y: pos.y - 1 };
-    } else if (shiftSPressed || sPressed) {
-      newDirection = "down";
-      newPos = shiftSPressed
-        ? { x: pos.x, y: pos.y }
-        : { x: pos.x, y: pos.y + 1 };
-    } else if (shiftAPressed || aPressed) {
-      newDirection = "left";
-      newPos = shiftAPressed
-        ? { x: pos.x, y: pos.y }
-        : { x: pos.x - 1, y: pos.y };
-    } else if (shiftDPressed || dPressed) {
-      newDirection = "right";
-      newPos = shiftDPressed
-        ? { x: pos.x, y: pos.y }
-        : { x: pos.x + 1, y: pos.y };
-    }
-
-    if (newDirection) {
-      setDirection(newDirection);
-      setWalking(true);
-
-      if (shouldNotCompleteMove(parsedMap.map, newPos)) {
-        setWalking(false);
+    const fn = (event) => {
+      if (walking) {
         return;
       }
 
-      const { effects: sqmEffects, slow } = getFutureSqmInfo(
-        parsedMap.map,
-        newPos,
-      );
-      const finalEffects = { ...effects } || {};
-      sqmEffects.forEach((item) => {
-        dispatch(setMessage(item.metadata.message));
-        finalEffects[item.name] = {
-          component: item.component,
-          wipeTimeout: setTimeout(() => {
-            delete effects[item.name];
-            setEffects(effects);
-          }, item.metadata.duration),
-        };
-      }, {});
+      let newDirection;
+      let newPos = {};
 
-      const speedTime = slow ? baseSpeed - baseSpeed * slow : baseSpeed;
-      setSpeed(speedTime);
-      setEffects(finalEffects);
+      const keyPressed = `${event.key}`.toLowerCase();
+      const isShiftPressed = event.shiftKey;
 
-      dispatch(setPlayerPos(newPos));
-    }
-  }, [
-    pos,
-    walking,
-    shiftWPressed,
-    shiftSPressed,
-    shiftAPressed,
-    shiftDPressed,
-  ]);
+      if (keyPressed === "w") {
+        newDirection = "up";
+        newPos = isShiftPressed
+          ? { x: pos.x, y: pos.y }
+          : { x: pos.x, y: pos.y - 1 };
+      } else if (keyPressed === "s") {
+        newDirection = "down";
+        newPos = isShiftPressed
+          ? { x: pos.x, y: pos.y }
+          : { x: pos.x, y: pos.y + 1 };
+      } else if (keyPressed === "a") {
+        newDirection = "left";
+        newPos = isShiftPressed
+          ? { x: pos.x, y: pos.y }
+          : { x: pos.x - 1, y: pos.y };
+      } else if (keyPressed === "d") {
+        newDirection = "right";
+        newPos = isShiftPressed
+          ? { x: pos.x, y: pos.y }
+          : { x: pos.x + 1, y: pos.y };
+      }
+
+      if (newDirection) {
+        setDirection(newDirection);
+        setWalking(true);
+
+        if (shouldNotCompleteMove(parsedMap.map, newPos)) {
+          setWalking(false);
+          return;
+        }
+
+        const { effects: sqmEffects, slow } = getFutureSqmInfo(
+          parsedMap.map,
+          newPos
+        );
+        const finalEffects = { ...effects } || {};
+        sqmEffects.forEach((item) => {
+          dispatch(setMessage(item.metadata.message));
+          finalEffects[item.name] = {
+            component: item.component,
+            wipeTimeout: setTimeout(() => {
+              delete effects[item.name];
+              setEffects(effects);
+            }, item.metadata.duration),
+          };
+        }, {});
+
+        const speedTime = slow ? baseSpeed - baseSpeed * slow : baseSpeed;
+        setSpeed(speedTime);
+        setEffects(finalEffects);
+
+        dispatch(setPlayerPos(newPos));
+      }
+    };
+
+    window.addEventListener("keypress", fn);
+
+    return () => {
+      window.removeEventListener("keypress", fn);
+    };
+  }, [pos, walking]);
 
   React.useEffect(() => {
     if (walking === true) {
@@ -152,7 +143,7 @@ const Player = (props = {}) => {
       left: pos.x * tileWidth,
       top: pos.y * tileWidth,
     }),
-    [pos],
+    [pos]
   );
 
   return (
@@ -170,7 +161,7 @@ const Player = (props = {}) => {
           ? Object.values(effects).map((item, index) =>
               React.createElement(item.component, {
                 key: `effect-${index}`,
-              }),
+              })
             )
           : null}
         <NameBar
