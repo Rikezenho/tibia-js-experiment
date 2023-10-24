@@ -42,10 +42,10 @@ const useWalkWithKeyboard = () => {
     return finalSpeed;
   }, [speed]);
 
-  const ctrlWPressed = useKeyPress("w", true);
-  const ctrlSPressed = useKeyPress("s", true);
-  const ctrlAPressed = useKeyPress("a", true);
-  const ctrlDPressed = useKeyPress("d", true);
+  const shiftWPressed = useKeyPress("w", true);
+  const shiftSPressed = useKeyPress("s", true);
+  const shiftAPressed = useKeyPress("a", true);
+  const shiftDPressed = useKeyPress("d", true);
   const wPressed = useKeyPress("w", false);
   const sPressed = useKeyPress("s", false);
   const aPressed = useKeyPress("a", false);
@@ -59,20 +59,27 @@ const useWalkWithKeyboard = () => {
     let newDirection;
     let newPos = {};
 
-    if (ctrlWPressed || wPressed) {
+    if (shiftWPressed || wPressed) {
       newDirection = "up";
-      newPos = ctrlWPressed
+      newPos = shiftWPressed
         ? { x: pos.x, y: pos.y }
         : { x: pos.x, y: pos.y - 1 };
-    } else if (ctrlSPressed || sPressed) {
+    } else if (shiftSPressed || sPressed) {
       newDirection = "down";
-      newPos = ctrlSPressed
+      newPos = shiftSPressed
         ? { x: pos.x, y: pos.y }
         : { x: pos.x, y: pos.y + 1 };
-    } else if (ctrlAPressed || aPressed) {
+    } else if (shiftAPressed || aPressed) {
       newDirection = "left";
-      newPos = ctrlAPressed
+      newPos = shiftAPressed
         ? { x: pos.x, y: pos.y }
+        : { x: pos.x - 1, y: pos.y };
+    } else if (shiftDPressed || dPressed) {
+      newDirection = "right";
+      newPos = shiftDPressed
+        ? { x: pos.x, y: pos.y }
+        : { x: pos.x + 1, y: pos.y };
+    }
         : { x: pos.x - 1, y: pos.y };
     } else if (ctrlDPressed || dPressed) {
       newDirection = "right";
@@ -112,7 +119,7 @@ const useWalkWithKeyboard = () => {
 
       dispatch(setPlayerPos(newPos));
     }
-  }, [pos, walking, ctrlWPressed, ctrlSPressed, ctrlAPressed, ctrlDPressed]);
+  }, [pos, walking, shiftWPressed, shiftSPressed, shiftAPressed, shiftDPressed]);
 
   React.useEffect(() => {
     if (walking === true) {
