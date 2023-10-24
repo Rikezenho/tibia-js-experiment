@@ -8,6 +8,7 @@ import { setPlayerPos } from '../../../store/actions/player';
 import { setMessage } from '../../../store/actions/hud';
 import { store } from '../../../store';
 import { log } from '../../../functions/gameUtils';
+import useKeyPress from '../../../hooks/useKeyPress';
 
 const calculateSpeed = speed => 1/(speed/100) * 1;
 
@@ -36,34 +37,34 @@ const useWalkWithKeyboard = () => {
         return finalSpeed;
     }, [speed]);
 
+    const ctrlWPressed = useKeyPress('w', true);
+    const ctrlSPressed = useKeyPress('s', true);
+    const ctrlAPressed = useKeyPress('a', true);
+    const ctrlDPressed = useKeyPress('d', true);
+
     React.useEffect(() => {
-        const fn = (event) => {
-            if (walking) {
-                return;
-            }
+        if (walking) {
+            return;
+        }
 
-            let newDirection;
-            let newPos = {};
+        let newDirection;
+        let newPos = {};
 
-            switch (`${event.key}`.toLowerCase()) {
-                case 'w':
-                    newDirection = 'up';
-                    newPos = { x: pos.x, y: pos.y - 1 };
-                break;
-                case 's':
-                    newDirection = 'down';
-                    newPos = { x: pos.x, y: pos.y + 1 };
-                break;
-                case 'a':
-                    newDirection = 'left';
-                    newPos = { x: pos.x - 1, y: pos.y };
-                break;
-                case 'd':
-                    newDirection = 'right';
-                    newPos = { x: pos.x + 1, y: pos.y };
-                break;
-            }
-  
+        if (ctrlWPressed) {
+            newDirection = 'up';
+            newPos = { x: pos.x, y: pos.y - 1 };
+        } else if (ctrlSPressed) {
+            newDirection = 'down';
+            newPos = { x: pos.x, y: pos.y + 1 };
+        } else if (ctrlAPressed) {
+            newDirection = 'left';
+            newPos = { x: pos.x - 1, y: pos.y };
+        } else if (ctrlDPressed) {
+            newDirection = 'right';
+            newPos = { x: pos.x + 1, y: pos.y };
+        }
+
+        if (newDirection) {
             setDirection(newDirection);
             setWalking(true);
 
@@ -76,11 +77,6 @@ const useWalkWithKeyboard = () => {
             const finalEffects = { ...effects } || {};
             sqmEffects.forEach((item) => {
                 dispatch(setMessage(item.metadata.message));
-                // if (finalEffects[item.name]) {
-                //     clearTimeout(finalEffects[item.name].wipeTimeout);
-                //     delete state.effects[item.name];
-                //     setState(state => ({ ...state, effects: state.effects }));
-                // }
                 finalEffects[item.name] = {
                     component: item.component,
                     wipeTimeout: setTimeout(() => {
@@ -95,14 +91,8 @@ const useWalkWithKeyboard = () => {
             setEffects(finalEffects);
 
             dispatch(setPlayerPos(newPos));
-        };
-
-        window.addEventListener('keypress', fn);
-
-        return () => {
-            window.removeEventListener('keypress', fn);
-        };
-    }, [pos, walking]);
+        }
+    }, [pos, walking, ctrlWPressed, ctrlSPressed, ctrlAPressed, ctrlDPressed]);
 
     React.useEffect(() => {
         if (walking === true) {
