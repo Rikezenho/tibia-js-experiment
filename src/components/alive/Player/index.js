@@ -80,13 +80,6 @@ const useWalkWithKeyboard = () => {
         ? { x: pos.x, y: pos.y }
         : { x: pos.x + 1, y: pos.y };
     }
-        : { x: pos.x - 1, y: pos.y };
-    } else if (ctrlDPressed || dPressed) {
-      newDirection = "right";
-      newPos = ctrlDPressed
-        ? { x: pos.x, y: pos.y }
-        : { x: pos.x + 1, y: pos.y };
-    }
 
     if (newDirection) {
       setDirection(newDirection);
