@@ -106,7 +106,7 @@ const useWalkWithKeyboard = () => {
     if (walking === true) {
       setTimeout(() => {
         setWalking(false);
-      }, calculatedSpeed * 1000);
+      }, calculatedSpeed * 500);
     }
   }, [walking]);
 
